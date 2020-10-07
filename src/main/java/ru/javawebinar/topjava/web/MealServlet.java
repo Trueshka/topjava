@@ -1,8 +1,8 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.CRUD.Crud;
-import ru.javawebinar.topjava.CRUD.MealMemoryCrud;
+import ru.javawebinar.topjava.mealcrud.CrudInterface;
+import ru.javawebinar.topjava.mealcrud.MealMemoryCrudInterface;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.MealsUtil;
 
@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
 
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -21,12 +22,12 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
 
-    private static final int CALORIES_DAY_LIMIT = 2000;
+    private static final int dayMaxCalories = 2000;
 
-    private final Crud<Meal> mealCrud;
+    private CrudInterface<Meal> mealCrud;
 
-    public MealServlet() {
-        mealCrud = new MealMemoryCrud();
+    public void init() {
+        mealCrud = new MealMemoryCrudInterface();
 
         mealCrud.add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
         mealCrud.add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));
@@ -42,25 +43,25 @@ public class MealServlet extends HttpServlet {
 
         switch (action.toLowerCase()) {
             case "add":
-                Meal newMeal = new Meal(LocalDateTime.now(), "", 0);
+                Meal newMeal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 0);
                 log.debug("Adding {}", newMeal);
                 request.setAttribute("meal", newMeal);
                 request.getRequestDispatcher("meal.jsp").forward(request, response);
                 break;
             case "update":
-                Meal meal = mealCrud.get(Long.parseLong(request.getParameter("mealId")));
+                Meal meal = mealCrud.get(getMealId(request));
                 log.debug("Updating {}", meal);
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("meal.jsp").forward(request, response);
                 break;
             case "delete":
-                log.debug("Delete mealId={}", Long.parseLong(request.getParameter("mealId")));
-                mealCrud.delete(Long.parseLong(request.getParameter("mealId")));
+                log.debug("Delete mealId={}", getMealId(request));
+                mealCrud.delete(getMealId(request));
                 response.sendRedirect("meals");
                 break;
             default:
                 request.setAttribute("meals", MealsUtil.filteredByStreams(mealCrud.getList(), LocalTime.MIN,
-                        LocalTime.MAX, CALORIES_DAY_LIMIT));
+                        LocalTime.MAX, dayMaxCalories));
                 request.getRequestDispatcher("meals.jsp").forward(request, response);
                 break;
         }
@@ -70,7 +71,7 @@ public class MealServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         Meal meal = new Meal(
-                Long.parseLong(request.getParameter("mealId")),
+                getMealId(request),
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories"))
@@ -98,4 +99,9 @@ public class MealServlet extends HttpServlet {
         String action = request.getParameter("action");
         return action != null ? action : "default";
     }
+
+    private long getMealId(HttpServletRequest request) {
+        return Long.parseLong(request.getParameter("mealId"));
+    }
+
 }

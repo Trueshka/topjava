@@ -1,8 +1,8 @@
-package ru.javawebinar.topjava.CRUD;
+package ru.javawebinar.topjava.mealcrud;
 
 import java.util.List;
 
-public interface Crud<T> {
+public interface CrudInterface<T> {
     T add(T object);
 
     T update(T object);

@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.CRUD;
+package ru.javawebinar.topjava.mealcrud;
 
 import ru.javawebinar.topjava.model.Meal;
 
@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class MealMemoryCrud implements Crud<Meal> {
-    private final AtomicLong counter = new AtomicLong(0);
+public class MealMemoryCrudInterface implements CrudInterface<Meal> {
+    private final AtomicLong counter = new AtomicLong(1);
     private final Map<Long, Meal> mealMap = new ConcurrentHashMap<>();
 
     @Override
