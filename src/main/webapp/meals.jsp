@@ -14,6 +14,9 @@
         .excess {
             color: red;
         }
+        .row{
+            margin-left: 15px;
+        }
     </style>
 </head>
 <body>
@@ -23,18 +26,39 @@
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
+    <h3>Моя Еда</h3>
+    <form method="get" action="meals">
+        <div class="row">
+                <label>From date:</label>
+
+            <input type="date" value="" name="startDate"></td>
+
+                <label>To date:</label>
+          <input type="date" value="" name="endDate">
+            </div>
+        <br>
+        <div class="row">
+            <label>From time:</label>
+            <td><input type="time" value="" name="startTime"></td>
+
+            <label>To time:</label>
+            <td><input type="time" value="" name="endTime"></td>
+        </div>
+
+        <button type="submit">Добавить</button>
+    </form>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Calories</th>
+            <th>Дата/Время</th>
+            <th>Описание</th>
+            <th>Калории</th>
             <th></th>
             <th></th>
         </tr>
         </thead>
         <c:forEach items="${meals}" var="meal">
-            <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
+            <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr class="${meal.excess ? 'excess' : 'normal'}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
