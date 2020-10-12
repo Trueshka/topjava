@@ -5,10 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.repository.inmemory.InMemoryMealRepository;
 import ru.javawebinar.topjava.to.MealTo;
-import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.ServletConfig;
@@ -56,7 +53,6 @@ public class MealServlet extends HttpServlet {
                 Integer.parseInt(request.getParameter("calories")),
                 SecurityUtil.authUserId());
 
-
         if (meal.isNew()) {
             controller.create(meal);
         } else {
@@ -72,7 +68,7 @@ public class MealServlet extends HttpServlet {
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
-                controller.delete(id);
+                controller.delete(id, SecurityUtil.authUserId());
                 response.sendRedirect("meals");
                 break;
             case "create":
@@ -80,7 +76,7 @@ public class MealServlet extends HttpServlet {
 
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000, SecurityUtil.authUserId()) :
-                        controller.get(getId(request));
+                        controller.get(getId(request), SecurityUtil.authUserId());
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;

@@ -7,15 +7,13 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.web.MealServlet;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
+import static ru.javawebinar.topjava.util.ValidationUtil.*;
 
 @Controller
 public class MealRestController {
@@ -37,18 +35,26 @@ public class MealRestController {
         log.info("getFiltered startDate={}, endDate={}, startTime={}, endTime={}", startDate, endDate,
                 startTime, endTime);
 
-        if (startDate == null) startDate = LocalDate.MIN;
-        if (endDate == null) endDate = LocalDate.MAX;
-        if (startTime == null) startTime = LocalTime.MIN;
-        if (endTime == null) endTime = LocalTime.MAX;
+        if (startDate == null) {
+            startDate = LocalDate.MIN;
+        }
+        if (endDate == null) {
+            endDate = LocalDate.MAX;
+        }
+        if (startTime == null) {
+            startTime = LocalTime.MIN;
+        }
+        if (endTime == null) {
+            endTime = LocalTime.MAX;
+        }
 
         List<Meal> meals = service.getFiltered(SecurityUtil.authUserId(), startDate, endDate);
         return MealsUtil.getFilteredTos(meals, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
     }
 
-    public Meal get(int id) {
+    public Meal get(int id, int userId) {
         log.info("get {}", id);
-        return service.get(id);
+        return service.get(id, userId);
     }
 
     public Meal create(Meal meal) {
@@ -57,9 +63,9 @@ public class MealRestController {
         return service.create(meal);
     }
 
-    public void delete(int id) {
+    public void delete(int id, int userId) {
         log.info("delete {}", id);
-        service.delete(id);
+        service.delete(id, userId);
     }
 
     public void update(int id, Meal meal) {

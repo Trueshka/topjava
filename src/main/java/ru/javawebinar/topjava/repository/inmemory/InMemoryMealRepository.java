@@ -7,7 +7,6 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -29,7 +28,6 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal) {
-
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             repository.put(meal.getId(), meal);
@@ -39,14 +37,14 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public boolean delete(int mealId) {
-        return repository.get(mealId).getUserId() == SecurityUtil.authUserId() && repository.remove(mealId) != null;
+    public boolean delete(int mealId, int userId) {
+        return repository.get(mealId).getUserId() == userId && repository.remove(mealId) != null;
     }
 
     @Override
-    public Meal get(int mealId) {
+    public Meal get(int mealId, int userId) {
         log.info("GET user id {}", repository.get(mealId).getUserId());
-        return repository.get(mealId).getUserId() != null && repository.get(mealId).getUserId() != SecurityUtil.authUserId() ? null : repository.get(mealId);
+        return repository.get(mealId).getUserId() != null && repository.get(mealId).getUserId() != userId ? null : repository.get(mealId);
     }
 
     @Override

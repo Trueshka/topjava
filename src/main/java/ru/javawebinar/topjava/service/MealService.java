@@ -22,12 +22,12 @@ public class MealService {
         return repository.save(meal);
     }
 
-    public void delete( int mealId) {
-        checkNotFoundWithId(repository.delete(mealId), mealId);
+    public void delete(int mealId, int userId) {
+        checkNotFoundWithId(repository.delete(mealId, userId), mealId);
     }
 
-    public Meal get(int mealId) {
-        return checkNotFoundWithId(repository.get( mealId), mealId);
+    public Meal get(int mealId, int userId) {
+        return checkNotFoundWithId(repository.get(mealId, userId), mealId);
     }
 
     public List<Meal> getAll(int userId) {
@@ -38,7 +38,7 @@ public class MealService {
         return (List<Meal>) repository.getFiltered(userId, startDate, endDate);
     }
 
-    public void update( Meal meal) {
+    public void update(Meal meal) {
         checkNotFoundWithId(repository.save(meal), meal.getId());
     }
 }
