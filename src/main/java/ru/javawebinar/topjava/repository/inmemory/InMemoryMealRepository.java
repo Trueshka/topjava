@@ -29,7 +29,6 @@ public class InMemoryMealRepository implements MealRepository {
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             mealRepo.put(meal.getId(), meal);
-            repository.put(userId, mealRepo);
             return meal;
         }
         // handle case: update, but not present in storage
@@ -55,7 +54,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getFiltered(int userId, LocalDate startDate, LocalDate endDate) {
-        return getFilteredByPredicate(userId, meal -> DateTimeUtil.isBetweenOpen(meal.getDate(), startDate, endDate));
+        return getFilteredByPredicate(userId, meal -> DateTimeUtil.isBetweenClosed(meal.getDate(), startDate, endDate));
     }
 
     private List<Meal> getFilteredByPredicate(int userId, Predicate<Meal> filter) {

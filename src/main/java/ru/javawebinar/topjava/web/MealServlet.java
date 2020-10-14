@@ -53,11 +53,11 @@ public class MealServlet extends HttpServlet {
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
         if (meal.isNew()) {
-            log.info("New meal id {} url id {}", meal.getId(), id);
             controller.create(meal);
+            log.info("New meal {}", meal);
         } else {
-            log.info("Meal id {} url id {}", meal.getId(), id);
             controller.update(meal.getId(), meal);
+            log.info("Meal {}", meal);
         }
         response.sendRedirect("meals");
     }
