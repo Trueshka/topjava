@@ -32,7 +32,7 @@ public class InMemoryMealRepository implements MealRepository {
             return meal;
         }
         // handle case: update, but not present in storage
-        return mealRepo.computeIfPresent(userId, (id, oldMeal) -> meal);
+        return mealRepo.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
     }
 
     @Override
