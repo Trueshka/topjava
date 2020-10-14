@@ -10,6 +10,10 @@ public class DateTimeUtil {
         return lt.compareTo(startValue) >= 0 && lt.compareTo(endValue) < 0;
     }
 
+    public static <T extends Comparable<T>> boolean isBetweenOpen(T lt, T startValue, T endValue) {
+        return lt.compareTo(startValue) >= 0 && lt.compareTo(endValue) <= 0;
+    }
+
     public static String toString(LocalDateTime ldt) {
         return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
     }

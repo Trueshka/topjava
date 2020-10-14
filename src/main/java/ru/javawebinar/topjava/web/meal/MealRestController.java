@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.web.MealServlet;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.*;
 
 @Controller
 public class MealRestController {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    private static final Logger log = LoggerFactory.getLogger(MealRestController.class);
 
     private final MealService service;
 
@@ -49,6 +50,7 @@ public class MealRestController {
         }
 
         List<Meal> meals = service.getFiltered(SecurityUtil.authUserId(), startDate, endDate);
+
         return MealsUtil.getFilteredTos(meals, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
     }
 
