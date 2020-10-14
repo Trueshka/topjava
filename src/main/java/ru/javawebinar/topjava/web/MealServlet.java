@@ -56,6 +56,7 @@ public class MealServlet extends HttpServlet {
         if (meal.isNew()) {
             controller.create(meal);
         } else {
+            log.info("meal id {} url id {}", meal.getId(), id);
             controller.update(meal.getId(), meal);
         }
         response.sendRedirect("meals");
@@ -68,7 +69,7 @@ public class MealServlet extends HttpServlet {
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
-                controller.delete(id, SecurityUtil.authUserId());
+                controller.delete(id);
                 response.sendRedirect("meals");
                 break;
             case "create":
@@ -76,7 +77,7 @@ public class MealServlet extends HttpServlet {
 
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000, SecurityUtil.authUserId()) :
-                        controller.get(getId(request), SecurityUtil.authUserId());
+                        controller.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;

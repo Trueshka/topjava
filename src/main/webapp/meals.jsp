@@ -14,7 +14,8 @@
         .excess {
             color: red;
         }
-        .row{
+
+        .row {
             margin-left: 15px;
         }
     </style>
@@ -29,23 +30,20 @@
     <h3>Моя Еда</h3>
     <form method="get" action="meals">
         <div class="row">
-                <label>From date:</label>
-
+            <label>From date:</label>
             <input type="date" value="" name="startDate"></td>
-
-                <label>To date:</label>
-          <input type="date" value="" name="endDate">
-            </div>
+            <label>To date:</label>
+            <input type="date" value="" name="endDate">
+        </div>
         <br>
         <div class="row">
             <label>From time:</label>
             <td><input type="time" value="" name="startTime"></td>
-
             <label>To time:</label>
             <td><input type="time" value="" name="endTime"></td>
         </div>
-
-        <button type="submit">Добавить</button>
+        <br>
+        <button type="submit">Отфильтровать</button>
     </form>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
