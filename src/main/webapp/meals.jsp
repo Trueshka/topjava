@@ -31,16 +31,16 @@
     <form method="get" action="meals">
         <div class="row">
             <label>From date:</label>
-            <input type="date" value="" name="startDate"></td>
+            <input type="date" value="${param.startDate}" name="startDate"></td>
             <label>To date:</label>
-            <input type="date" value="" name="endDate">
+            <input type="date" value="${param.endDate}" name="endDate">
         </div>
         <br>
         <div class="row">
             <label>From time:</label>
-            <td><input type="time" value="" name="startTime"></td>
+            <td><input type="time" value="${param.startTime}" name="startTime"></td>
             <label>To time:</label>
-            <td><input type="time" value="" name="endTime"></td>
+            <td><input type="time" value="${param.endTime}" name="endTime"></td>
         </div>
         <br>
         <button type="submit">Отфильтровать</button>
