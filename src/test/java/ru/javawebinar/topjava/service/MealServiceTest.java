@@ -42,7 +42,7 @@ public class MealServiceTest {
     @Test
     public void get() {
         Meal meal = service.get(USER_MEAL_ID, USER_ID);
-        assertMatch(meal, userMeal30);
+        assertMatch(meal, userMeal3010);
     }
 
     @Test
@@ -77,6 +77,12 @@ public class MealServiceTest {
                 LocalDate.of(2020, Month.JANUARY, 30),
                 LocalDate.of(2020, Month.JANUARY, 30), USER_ID);
         assertMatch(meals, userMealAll30);
+    }
+
+    @Test
+    public void getBetweenInclusiveWithoutRanges() {
+        List<Meal> meals = service.getBetweenInclusive(null, null, USER_ID);
+        assertMatch(meals, userMeals);
     }
 
     @Test
