@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -75,19 +76,13 @@ public class MealServiceTest {
         List<Meal> meals = service.getBetweenInclusive(
                 LocalDate.of(2020, Month.JANUARY, 30),
                 LocalDate.of(2020, Month.JANUARY, 30), USER_ID);
-        assertMatch(meals, userMeal30);
-    }
-
-    @Test
-    public void getBetweenInclusiveWithoutRanges() {
-        List<Meal> meals = service.getBetweenInclusive(null, null, USER_ID);
-        assertMatch(meals, userMeal31, userMeal30);
+        assertMatch(meals, userMealAll30);
     }
 
     @Test
     public void getAll() {
         List<Meal> meals = service.getAll(USER_ID);
-        assertMatch(meals, userMeal31, userMeal30);
+        assertMatch(meals, userMeals);
     }
 
     @Test
@@ -117,5 +112,10 @@ public class MealServiceTest {
         newMeal.setId(created.getId());
         assertMatch(created, newMeal);
         assertMatch(service.get(newMeal.getId(), USER_ID), newMeal);
+    }
+
+    @Test
+    public void createSameDate() {
+        assertThrows(DuplicateKeyException.class, () -> service.create(new Meal(getOld()), USER_ID));
     }
 }
