@@ -115,7 +115,7 @@ public class MealServiceTest {
     }
 
     @Test
-    public void createSameDate() {
+    public void duplicateDateTimeCreate() {
         assertThrows(DuplicateKeyException.class, () -> service.create(new Meal(getOld()), USER_ID));
     }
 }
