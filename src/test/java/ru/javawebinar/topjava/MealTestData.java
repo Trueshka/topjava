@@ -12,7 +12,7 @@ import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 public class MealTestData {
     public static final int USER_MEAL_ID = START_SEQ + 2;
     public static final int NOT_FOUND_MEAL = 10;
-
+    public static final int ADMIN_MEAL_ID = START_SEQ + 4;
     public static final Meal userMeal30 = new Meal(USER_MEAL_ID,
             LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
     public static final Meal userMeal31 = new Meal(USER_MEAL_ID + 1,
