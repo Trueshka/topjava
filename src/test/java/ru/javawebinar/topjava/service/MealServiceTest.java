@@ -45,8 +45,7 @@ public class MealServiceTest {
     public final Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
-            String testLog = "Test " + description.getMethodName() + " finished in "
-                    + TimeUnit.NANOSECONDS.toMillis(nanos) + " ms";
+            String testLog = description.getMethodName() + " " + TimeUnit.NANOSECONDS.toMillis(nanos) + " ms";
             log.info(testLog);
             summary.append(testLog);
             summary.append("\n");
