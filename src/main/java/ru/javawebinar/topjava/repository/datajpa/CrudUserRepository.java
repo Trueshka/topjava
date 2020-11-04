@@ -21,5 +21,5 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
                 SELECT u FROM User u LEFT JOIN FETCH u.meals m
                 WHERE u.id=:id
             """)
-    User getUserFromMeal(@Param("id") int id);
+    User getUserWithMeals(@Param("id") int id);
 }
